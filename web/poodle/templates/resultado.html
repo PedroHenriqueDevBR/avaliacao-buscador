@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da busca</title>
+    <link rel="stylesheet" href="{% static 'css/resultado.css' %}">
+</head>
+
+<body>
+
+    <header class="cabecalho">
+        <nav><a href="{% url 'home' %}">Voltar</a></nav>
+    </header>
+
+    <main class="listagem">
+        <!-- <section class="node">
+            <h1><a href="#"> Titulo da busca </a></h1>
+            <a href="#" class="link">http://pedrohenrique.droppages.com</a>
+            <p>Descrição: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum, in sequi iure natus soluta
+                consectetur suscipit esse aliquid culpa repellat quos dignissimos ut temporibus placeat qui enim eaque!
+                Ratione, similique!</p>
+        </section> -->
+
+        {% if resultados %}
+
+            {% for resultado in resultados %}
+                <section class="node">
+                    <h1><a href="{{ resultado.link }}"> {{ resultado.titulo }} </a></h1>
+                    <a href="{{ resultado.link }}" class="link">{{ resultado.link }}</a>
+                    <p>{{ resultado.descricao }}</p>
+                </section>
+            {% endfor %}
+        
+        {% else %}
+            <section class="node">
+                <h1><a href="{% url 'home' %}"> Nenhum resultado encontrado</a></h1>
+                <a href="{% url 'home' %}" class="link">página inicial</a>
+                <p>Sua busca não localizou nenhum resultado! Tente outra vez.</p>
+            </section>
+        {% endif %}
+    </main>
+
+</body>
+
+</html>

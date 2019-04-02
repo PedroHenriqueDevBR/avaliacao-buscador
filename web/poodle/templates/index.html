@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>POODLE - indexador de páginas</title>
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+</head>
+
+<body>
+
+    <section class="busca">
+        <h1 class="logo">POODLE</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <p>
+                <label for="keyword">Busca</label><br>
+                <input type="search" placeholder="Digite a sua busca" name="keyword" id="keyword">
+            </p>
+            <p>
+                <label for="urlinicial">Inicio</label><br>
+                <input type="text" placeholder="Por onde a busca irá iniciar" name="urlinicial" id="urlinicial">
+            </p>
+            <p>
+                <label for="deth">Camadas</label><br>
+                <input type="number" placeholder="Quanto maior mais demorado" min="0" value="0" name="deth" id="deth">
+            </p>
+
+            <input type="submit" value="Buscar" class="btn">
+
+        </form>
+    </section>
+
+</body>
+
+</html>

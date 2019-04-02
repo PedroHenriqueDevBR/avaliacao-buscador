@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Permanent+Marker');
+
+/*
+font-family: 'Gloria Hallelujah', cursive;
+font-family: 'Permanent Marker', cursive;
+*/
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Gloria Hallelujah', cursive;
+    text-decoration: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: #eee;
+}
+
+.cabecalho {
+    width: 100;
+    height: 56px;
+    background: linear-gradient(90deg, #A770EF, #CF8BF3, #FDB99B);
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    padding: 0 10%;
+}
+
+.cabecalho a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.listagem {
+    margin: 0;
+    padding: 2%;
+}
+
+.node {
+    width: 80%;
+    height: auto;
+    background: #fff;
+    margin: 10px 10% 15px 10%;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.node * {
+    font-size: 12pt;
+    font-family: sans-serif;
+}
+
+.link {
+    color: darkgreen;
+}
