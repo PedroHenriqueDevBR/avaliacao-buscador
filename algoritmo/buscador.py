@@ -15,7 +15,7 @@ class Indexador:
         self.matchs = []  # lista de sites encontrados com pelo menos uma keyword
 
     # Funcao principal
-    def search(self, keyword, url, deth = 0):
+    def search(self, keyword, url, deth=0):
         self.keywords = keyword.split()
         self.url = url if (url is not None) else 'https://www.uol.com.br'
 
