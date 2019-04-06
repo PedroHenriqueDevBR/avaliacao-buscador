@@ -2,7 +2,6 @@ import requests
 import requests_cache
 from bs4 import BeautifulSoup
 
-
 # Configurações iniciais
 requests_cache.install_cache('visited_cache')
 
@@ -10,26 +9,25 @@ requests_cache.install_cache('visited_cache')
 class Indexador:
     # Construtor
     def __init__(self):
-        self.url = '' # url inicial
-        self.deth = '' # limite de camadas para busca de informações, evita loop infinito
-        self.keywords = [] # a busca pode ser uma palavra apenas ou uma frase.
-        self.matchs = [] # lista de sites encontrados com pelo menos uma keyword
+        self.url = ''  # url inicial
+        self.keywords = []  # a busca pode ser uma palavra apenas ou uma frase.
+        self.matchs = []  # lista de sites encontrados com pelo menos uma keyword
 
     # Funcao principal
-    def seach(self, keyword, url = None, deth = 0):
+    def search(self, keyword, url, deth=0):
         self.keywords = keyword.split()
-        self.url = url if (url != None) else 'https://www.uol.com.br'
-        self.deth = deth
+        self.url = url if (url is not None) else 'https://www.uol.com.br'
 
         camada_visitada = 0
         sites_sem_visita = [self.url]
 
-        while camada_visitada <= self.deth:
+        while camada_visitada <= deth:
             sites_sem_visita = self.visitar_sites(sites_sem_visita)
             camada_visitada += 1
 
     # Visita cada site
     def visitar_sites(self, sites):
+        links = []
         for site in sites:
             try:
                 response = requests.get(site)
@@ -38,10 +36,17 @@ class Indexador:
 
             if response.status_code == 200:
                 html = response.text
+                upper_html = BeautifulSoup(response.text.upper(), 'html.parser')  # tudo em maiusculo
+
+                frases = upper_html.find_all(text=True)
 
                 for keyword in self.keywords:
-                    if keyword in html:
-                        self.salvar_site(site, html)
+                    keyword = keyword.upper()  # deixa a keyword em maiusculo também
+
+                    for frase in frases:
+                        palavras_da_frase = frase.split()
+                        if keyword in palavras_da_frase:  # se repete 4 vezes
+                            self.salvar_site(site, keyword, html)
 
                 links = self.extrair_links(html)
 
@@ -61,21 +66,27 @@ class Indexador:
         return links_encontrados
 
     # Salva um site caso haja um match
-    def salvar_site(self, a_href, html):
-        soup = BeautifulSoup(html, 'html.parser')
-        title =  a_href
-        metadados = soup.find_all('meta')
-        descricao = 'Sem descricao'
+    def salvar_site(self, a_href, keyword, html):
+        soup = BeautifulSoup(html.upper(), 'html.parser')
+
+        frases = soup.find_all(text=True)
+
+        title = a_href
+        descricao = []  # transformei a descrição em uma lista apenas para ver se os resultados davam certo
 
         try:
             title = soup.title.string
         except:
             pass
 
-        for meta in metadados:
-            if 'name' in meta.attrs:
-                if meta.attrs['name'] == 'description':
-                    descricao = meta.attrs['content']
+        keyword = keyword.upper()
+        for frase in frases:
+            palavras_da_frase = frase.split()
+            if keyword in palavras_da_frase:
+                index = palavras_da_frase.index(keyword)  # busca a posicao da palavra na frase
+
+                # faz append de 5 palavras antes e depois da keyword:
+                descricao.append(' '.join(palavras_da_frase[max(0, index - 5):min(index + 6, len(palavras_da_frase))]))
 
         self.matchs.append(
             {'link': a_href,
@@ -83,3 +94,6 @@ class Indexador:
              'descricao': descricao
              }
         )
+
+        # só lembrando que, por causa desses "for" iguais no salvar_site e no visitar_sites, a resposta no fim sai
+        # duplicada kkkjkj

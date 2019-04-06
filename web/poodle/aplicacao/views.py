@@ -11,7 +11,7 @@ def home(request):
         if len(busca) > 0 and len(urlinicial) > 0 and len(deth) > 0:
             deth = int(deth)
             buscador = Indexador()
-            buscador.seach(busca, urlinicial, deth)
+            buscador.search(busca, urlinicial, deth)
             resultado = buscador.matchs
             return render(request, 'resultado.html', {'resultados': resultado})
 

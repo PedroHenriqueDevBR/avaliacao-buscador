@@ -62,7 +62,7 @@ class Indexador:
     # Salva um site caso haja um match
     def salvar_site(self, a_href, html):
         soup = BeautifulSoup(html, 'html.parser')
-        title =  a_href
+        title = a_href
         metadados = soup.find_all('meta')
         descricao = 'Sem descricao'
 
