@@ -3,7 +3,7 @@ import requests_cache
 from bs4 import BeautifulSoup
 
 # Configurações iniciais
-requests_cache.install_cache(expire_after=10)  # atualiza o cache a cada 10 segundos
+requests_cache.install_cache(expire_after=60)  # atualiza o cache a cada 60 segundos
 
 
 class Indexador:
@@ -37,15 +37,16 @@ class Indexador:
 
             if response.status_code == 200:
                 html = response.text
-                upper_html = BeautifulSoup(response.text.upper(), 'html.parser')  # tudo em maiusculo
+                soup = BeautifulSoup(response.text, 'html.parser')
 
-                frases = upper_html.find_all(text=True)
+                frases = soup.find_all(text=True)
 
                 for keyword in self.keywords:
-                    keyword = keyword.upper()  # deixa a keyword em maiusculo também
+
+                    keyword = keyword.upper()  # deixa a keyword em maiusculo
 
                     for frase in frases:
-                        palavras_da_frase = frase.split()
+                        palavras_da_frase = frase.upper().split()
                         if keyword in palavras_da_frase:  # se repete 4 vezes
                             self.salvar_site(site, keyword, html)
 
@@ -68,7 +69,7 @@ class Indexador:
 
     # Salva um site caso haja um match
     def salvar_site(self, a_href, keyword, html):
-        soup = BeautifulSoup(html.upper(), 'html.parser')
+        soup = BeautifulSoup(html, 'html.parser')
         frases = soup.find_all(text=True)
         title = a_href
         descricao = []  # transformei a descrição em uma lista apenas para ver se os resultados davam certo
@@ -78,9 +79,8 @@ class Indexador:
         except:
             pass
 
-        keyword = keyword.upper()
         for frase in frases:
-            palavras_da_frase = frase.split()
+            palavras_da_frase = frase.upper().split()
             if keyword in palavras_da_frase:
                 index = palavras_da_frase.index(keyword)  # busca a posicao da palavra na frase
 
