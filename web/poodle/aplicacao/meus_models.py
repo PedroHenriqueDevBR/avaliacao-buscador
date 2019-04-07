@@ -3,7 +3,7 @@ import requests_cache
 from bs4 import BeautifulSoup
 
 # Configurações iniciais
-requests_cache.install_cache('visited_cache')
+requests_cache.install_cache(expire_after=10)  # atualiza o cache a cada 10 segundos
 
 
 class Indexador:
