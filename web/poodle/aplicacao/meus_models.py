@@ -43,12 +43,13 @@ class Indexador:
 
                 for keyword in self.keywords:
 
-                    keyword = keyword.upper()  # deixa a keyword em maiusculo
+                    keyword = keyword.lower()
 
                     for frase in frases:
-                        palavras_da_frase = frase.upper().split()
-                        if keyword in palavras_da_frase:  # se repete 4 vezes
-                            self.salvar_site(site, keyword, html)
+                        palavras_da_frase = frase.lower().split()
+                        for palavra in palavras_da_frase:
+                            if keyword in palavra:  # se repete 4 vezes
+                                self.salvar_site(site, keyword, html)
 
                 links = self.extrair_links(html)
 
@@ -80,17 +81,18 @@ class Indexador:
             pass
 
         for frase in frases:
-            palavras_da_frase = frase.upper().split()
-            if keyword in palavras_da_frase:
-                index = palavras_da_frase.index(keyword)  # busca a posicao da palavra na frase
+            palavras_da_frase = frase.split()
+            for palavra in palavras_da_frase:
+                if keyword in palavra.lower():
+                    index = palavras_da_frase.index(palavra)  # busca a posicao da palavra na frase
 
-                # faz append de 5 palavras antes e depois da keyword:
-                descricao.append(' '.join(palavras_da_frase[max(0, index - 5):min(index + 6, len(palavras_da_frase))]))
+                    # faz append de 5 palavras antes e depois da keyword:
+                    descricao.append(' '.join(palavras_da_frase[max(0, index - 5):min(index + 6, len(palavras_da_frase))]))
 
         self.matchs.append(
             {'link': a_href,
              'titulo': title,
-             'descricao': ', '.join(descricao)
+             'descricao': '... '.join(descricao)
              }
         )
 
