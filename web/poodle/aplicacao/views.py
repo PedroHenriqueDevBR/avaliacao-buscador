@@ -8,11 +8,11 @@ def home(request):
         urlinicial = request.POST.get('urlinicial')
         deth = request.POST.get('deth')
 
-        if len(busca) > 0 and len(urlinicial) > 0 and len(deth) > 0:
+        if len(busca) > 0 and len(deth) > 0:
             deth = int(deth)
             buscador = Indexador()
             buscador.search(busca, urlinicial, deth)
-            resultado = buscador.matchs
+            resultado = buscador.get_matchs()
             return render(request, 'resultado.html', {'resultados': resultado})
 
     return render(request, 'index.html')

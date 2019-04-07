@@ -17,6 +17,7 @@ class Indexador:
     def search(self, keyword, url, deth=0):
         self.keywords = keyword.split()
         self.url = url if (url is not None) else 'https://www.uol.com.br'
+        self.url = url if (url != '') else 'https://www.uol.com.br'
 
         camada_visitada = 0
         sites_sem_visita = [self.url]
@@ -68,9 +69,7 @@ class Indexador:
     # Salva um site caso haja um match
     def salvar_site(self, a_href, keyword, html):
         soup = BeautifulSoup(html.upper(), 'html.parser')
-
         frases = soup.find_all(text=True)
-
         title = a_href
         descricao = []  # transformei a descrição em uma lista apenas para ver se os resultados davam certo
 
@@ -91,9 +90,16 @@ class Indexador:
         self.matchs.append(
             {'link': a_href,
              'titulo': title,
-             'descricao': descricao
+             'descricao': ', '.join(descricao)
              }
         )
 
         # só lembrando que, por causa desses "for" iguais no salvar_site e no visitar_sites, a resposta no fim sai
         # duplicada kkkjkj
+
+    def get_matchs(self):
+        resultado = []
+        for match in self.matchs:
+            if match not in resultado:
+                resultado.append(match)
+        return resultado
