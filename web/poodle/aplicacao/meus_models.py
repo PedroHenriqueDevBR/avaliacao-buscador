@@ -38,8 +38,8 @@ class Indexador:
                 if self.adiciona_ponto(site):
                     continue
 
-                html = response.text
-                soup = BeautifulSoup(response.text, 'html.parser')
+                html = response.content
+                soup = BeautifulSoup(html, 'html.parser')
                 frases = soup.find_all(text=True)
 
                 for keyword in self.keywords:
