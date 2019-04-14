@@ -35,6 +35,9 @@ class Indexador:
                 continue
 
             if response.status_code == 200:
+                if self.adiciona_ponto(site):
+                    continue
+
                 html = response.text
                 soup = BeautifulSoup(response.text, 'html.parser')
                 frases = soup.find_all(text=True)
@@ -48,10 +51,16 @@ class Indexador:
                                 self.salvar_site(site, keyword, html)
 
                 links = self.extrair_links(html)
-
         return links
 
-    # Extrai todos os links para uma nova busca
+    def adiciona_ponto(self, url):
+        if len(self.matchs) != 0:
+            for site in self.matchs:
+                if site['link'] == url:
+                    site['pontos'] += 1
+                    return True
+        return False
+
     def extrair_links(self, html):
         soup = BeautifulSoup(html, 'html.parser')
         extracao_de_tag = soup.find_all('a')
@@ -64,7 +73,6 @@ class Indexador:
 
         return links_encontrados
 
-    # Salva um site caso haja um match
     def salvar_site(self, a_href, keyword, html):
         soup = BeautifulSoup(html, 'html.parser')
         frases = soup.find_all(text=True)
@@ -89,7 +97,8 @@ class Indexador:
         self.matchs.append(
             {'link': a_href,
              'titulo': title,
-             'descricao': '... '.join(descricao)
+             'descricao': '... '.join(descricao),
+             'pontos': 1
              }
         )
 
@@ -98,4 +107,6 @@ class Indexador:
         for match in self.matchs:
             if match not in resultado:
                 resultado.append(match)
+        resultado.sort(key=lambda x: x['pontos'], reverse=True)
+
         return resultado

@@ -54,6 +54,14 @@ html, body {
     font-family: sans-serif;
 }
 
+.descricao {
+    max-width: 100%;
+    max-height: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+}
+
 .link {
     color: darkgreen;
 }
