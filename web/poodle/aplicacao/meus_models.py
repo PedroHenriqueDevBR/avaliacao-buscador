@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import time
 
 # Configurações iniciais
-requests_cache.install_cache(expire_after=600)  # atualiza o cache a cada 10 minutos
+requests_cache.install_cache(expire_after=3600)  # atualiza o cache a cada hora
 
 
 class Indexador:
@@ -13,7 +13,6 @@ class Indexador:
         self.url = ''  # url inicial
         self.keywords = []  # a busca pode ser uma palavra apenas ou uma frase.
         self.matchs = []  # lista de sites encontrados com pelo menos uma keyword
-
 
     # Funcao principal
     def search(self, keyword, url, deth=0):
@@ -34,7 +33,6 @@ class Indexador:
         print('Tempo de execução: {}'.format(fim - inicio))
         print('==========================================\n\n')
 
-
     # Visita cada site
     def visitar_sites(self, sites):
         links = []
@@ -42,8 +40,10 @@ class Indexador:
             try:
                 response = requests.get(site)
                 if response.status_code == 200:
-                    if self.adiciona_ponto(site):
-                        continue
+
+                    print('\n==========================================')
+                    print('Visitando: ' + site)
+                    print('==========================================')
 
                     html = response.content
                     soup = BeautifulSoup(html, 'html.parser')
@@ -53,13 +53,14 @@ class Indexador:
                         keyword = keyword.lower()
                         for palavra in frases:
                             if keyword in palavra.lower():
-                                self.salvar_site(site, keyword, soup)        
+                                if self.adiciona_ponto(site):
+                                    continue
+                                self.salvar_site(site, keyword, soup)
                     links = self.extrair_links(soup)
             except:
                 continue
 
         return links
-
 
     def adiciona_ponto(self, url):
         if len(self.matchs) > 0:
@@ -80,10 +81,8 @@ class Indexador:
 
         return links_encontrados
 
-
     def salvar_site(self, a_href, keyword, soup):
         frases = soup.find_all(text=True)
-        title = a_href
         descricao = []
 
         try:
@@ -95,19 +94,19 @@ class Indexador:
                         index = palavras_da_frase.index(palavra)  # busca a posicao da palavra na frase
 
                         # faz append de 5 palavras antes e depois da keyword:
-                        descricao.append(' '.join(palavras_da_frase[max(0, index - 5):min(index + 6, len(palavras_da_frase))]))
+                        descricao.append(
+                            ' '.join(palavras_da_frase[max(0, index - 5):min(index + 6, len(palavras_da_frase))]))
 
             self.matchs.append(
                 {'link': a_href,
-                'titulo': title,
-                'descricao': '... '.join(descricao),
-                'pontos': 1
-                }
+                 'titulo': title,
+                 'descricao': '... '.join(descricao),
+                 'pontos': 1
+                 }
             )
 
         except:
             pass
-
 
     def get_matchs(self):
         resultado = []
