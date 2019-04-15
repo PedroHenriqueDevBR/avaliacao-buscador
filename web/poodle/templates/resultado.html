@@ -37,10 +37,49 @@
             </section>
         {% endif %}
 
-        <a href="#" id="mostrar-mais" style="width: 150px; background: #A770EF; padding: 3px 10px; color: #fff; margin: 10px calc(50% - 75px); border-radius: 5px;">Mostrar mais</a>
+        <a id="mostrarmais" style="width: 150px; background: #A770EF; padding: 3px 10px; color: #fff; margin: 10px calc(50% - 75px); border-radius: 5px;">Mostrar mais</a>
     </main>
 
+    <script>
+        var sites;
+        var posicao;
 
+        function inicializa() {
+            sites = document.getElementsByClassName('node');
+            posicao = 0;
+
+            for (site of sites) {
+                site.style.display = 'none';
+            }
+            
+            carregar();
+        }
+
+        function carregar() {
+            var contador = 0;
+            
+            while (posicao < sites.length && contador < 10) {
+                if (sites[posicao] == undefined || sites[posicao] == null) {
+                    break;
+                } else {
+                    sites[posicao].style.display = 'block';
+                    contador++;
+                    posicao++;
+                }
+            }
+
+            someComBotao();
+        }
+
+        function someComBotao() {
+            if (posicao >= sites.length) {
+                document.getElementById('mostrarmais').style.display = 'none';
+            }
+        }
+
+        addEventListener('load', inicializa);
+        document.getElementById('mostrarmais').addEventListener('click', carregar);
+    </script>
 </body>
 
 </html>
