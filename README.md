@@ -1,7 +1,8 @@
 # POODLE
 
-## Indexador específico de links na web.
+Indexador específico de links na web.
 
+<img src="https://user-images.githubusercontent.com/36716898/75551278-9ab9cb00-5a12-11ea-8158-458f2ba095b6.png" width="100%"></img>
 
 
 ## Descrição
@@ -16,10 +17,21 @@ Para a realização de uma basta três informações são necessárias.
 
 ### Definição de camadas.
 
-As camadas referem-se aos links que serão visitados pelo algoritmo, como mostra a imagem abaixo.
+As camadas referem-se aos links que serão visitados pelo algoritmo, como mostra a descrição abaixo.
+
+Ao visitar um site, o algoritmo localiza todos os links, assim que o site em destaque for finalizado, os links coletados serão visitados um por um e assim sucessivamente até que o número de camadas alcance o limite e todos os links coletados sejam visitados.
 
 
-
+* inicio - **Camada 0**
+	- link 01 - **Camada 1**
+		+ sublink 01 - **Camada 2**
+		+ sublink 02
+	- link 02
+		+ sublink 01
+		+ sublink 02
+	- link 03
+		+ sublink 01
+		+ sublink 02
 
 
 
