@@ -19,21 +19,11 @@ Para a realização de uma basta três informações são necessárias.
 
 As camadas referem-se aos links que serão visitados pelo algoritmo, como mostra a descrição abaixo.
 
-Ao visitar um site, o algoritmo localiza todos os links, assim que o site em destaque for finalizado, os links coletados serão visitados um por um e assim sucessivamente até que o número de camadas alcance o limite e todos os links coletados sejam visitados.
+Ao visitar um site, o algoritmo localiza todos as urls que o site em questão faz referência, assim que o site em destaque for finalizado, as urls coletadas serão visitadas uma a uma, e assim sucessivamente até que o número de camadas alcance o limite e todos as urls coletadas sejam visitadas.
 
+Observe a imagem abaixo, a cada site visitado novas urls são encontradas. O primeiro site, ou seja, o início foi apelidado de **a**, a cada camada percorrida uma nova letra é adicionada ao final, definindo quantas camadas foram percorridas, e qual a camada mãe.
 
-* inicio - **Camada 0**
-	- link 01 - **Camada 1**
-		+ sublink 01 - **Camada 2**
-		+ sublink 02
-	- link 02
-		+ sublink 01
-		+ sublink 02
-	- link 03
-		+ sublink 01
-		+ sublink 02
-
-
+<img src="https://user-images.githubusercontent.com/36716898/75596066-b30b0380-5a6d-11ea-9749-b8b3a39b0456.png" width="100%"></img>
 
 
 ## Screenshots
